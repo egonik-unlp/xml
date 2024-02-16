@@ -11,7 +11,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>>{
 	let scrubro = 0f32;
 	create_rubro(conn, "Peter", 0.021);
 	create_rubro(conn, "Peter", 0.0221);
-
+	// Hola ceci como andas
 	let results = rubro
 		.filter(name.eq(nrubro))
 		.select(Rubro::as_select())

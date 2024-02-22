@@ -145,6 +145,24 @@ pub struct NewProducto<'a> {
     pub score: Option<f32>,
 }
 
+#[derive(Queryable,Identifiable, Selectable, Debug, Clone, Associations)]
+#[diesel(belongs_to(Producto))]
+#[diesel(belongs_to(Ingrediente))]
+#[diesel(belongs_to(Aditivo))]
+#[diesel(primary_key(ingrediente_id, producto_id, aditivo_id))]
+#[diesel(table_name = crate::schema::ingredientes_productos)]
+#[diesel(check_for_backend(diesel::pg::Pg))]
+pub struct IngredienteProducto {
+    pub id : i32,
+    pub producto_id : i32,
+    pub ingrediente_id : Option<i32>,
+    pub aditivo_id : Option<i32>,
+}
+#[derive(Debug, Insertable, Default)]
+#[diesel(table_name = crate::schema::ingredientes_productos)]
 
-
-
+pub struct NewIngredienteProducto {
+    pub producto_id : i32,
+    pub ingrediente_id : Option<i32>,
+    pub aditivo_id : Option<i32>,
+}

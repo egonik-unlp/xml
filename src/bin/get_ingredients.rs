@@ -3,10 +3,10 @@ use diesel::prelude::*;
 use xml::*;
 
 fn main() {
-    use self::schema::ingrediente::dsl::*;
+    use self::schema::ingredientes::dsl::*;
 
     let connection = &mut establish_connection();
-    let results: Vec<Ingrediente> = ingrediente.load(connection).expect("ERROR CARGANDO DE DB");
+    let results: Vec<Ingrediente> = ingredientes.load(connection).expect("ERROR CARGANDO DE DB");
 
     println!("Displaying {} posts", results.len());
     for post in results {

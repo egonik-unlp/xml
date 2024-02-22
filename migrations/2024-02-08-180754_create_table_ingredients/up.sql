@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS "ingrediente" (
+CREATE TABLE IF NOT EXISTS "ingredientes" (
 	"id"	SERIAL UNIQUE,
 	"categoria"	CAT NOT NULL,
 	"actual_name"	VARCHAR,

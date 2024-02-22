@@ -1,5 +1,5 @@
 -- Your SQL goes here
-CREATE TABLE IF NOT EXISTS "rubro" (
+CREATE TABLE IF NOT EXISTS "rubros" (
 	"id"	SERIAL UNIQUE,
 	"name"		VARCHAR,
 	"score"		REAL,

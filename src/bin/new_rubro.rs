@@ -6,4 +6,3 @@ fn main() {
     println!("\nSaved draft with id {}", post.id);
     println!("{post:?}");
 }
-

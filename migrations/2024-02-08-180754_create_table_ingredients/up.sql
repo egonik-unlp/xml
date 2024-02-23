@@ -1,7 +1,7 @@
 CREATE TABLE IF NOT EXISTS "ingredientes" (
 	"id"	SERIAL UNIQUE,
 	"categoria"	CAT NOT NULL,
-	"actual_name"	VARCHAR,
+	"actual_name"	VARCHAR UNIQUE,
 	"info_para_reporte"	VARCHAR,
 	"cita"	VARCHAR,
 	"cancer_risk"	REAL,

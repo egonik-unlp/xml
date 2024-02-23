@@ -1,5 +1,6 @@
+use crate::*;
+use crate::{schema::ingredientes, DbCmp};
 use diesel::prelude::*;
-
 #[derive(Queryable, Selectable, Debug, Clone, PartialEq)]
 #[diesel(table_name = crate::schema::ingredientes)]
 #[diesel(check_for_backend(diesel::pg::Pg))]
@@ -17,6 +18,24 @@ pub struct Ingrediente {
     pub env_risk: Option<f32>,
     pub total_risk: Option<f32>,
 }
+
+// impl<'a> DbCmp<'a> for Ingrediente {
+//     type DbType = NewIngrediente<'a>;
+//     fn compare_to_db(self, rhs: Self::DbType) -> Option<Vec<Self::DbType>> {
+//         let conn = &mut establish_connection();
+//         use crate::schema::ingredientes;
+//         use ingredientes::dsl::*;
+//         let name_to_compare = self.actual_name;
+//         if let Some(name) = name_to_compare {
+//             ingredientes
+//                 .filter(actual_name.eq(rhs.actual_name))
+//                 .load::<Self::DbType>(conn)
+//                 .ok()
+//         } else {
+//             None
+//         }
+//     }
+// }
 
 #[derive(Insertable, Default)]
 #[diesel(table_name = crate::schema::ingredientes)]
@@ -48,7 +67,6 @@ impl Default for Cat {
     }
 }
 
-
 #[derive(Queryable, Selectable, Debug, Clone, PartialEq)]
 #[diesel(table_name = crate::schema::rubros)]
 #[diesel(check_for_backend(diesel::pg::Pg))]
@@ -58,7 +76,7 @@ pub struct Rubro {
     pub score: Option<f32>,
 }
 
-#[derive(Insertable, Default)]
+#[derive(Insertable, Default, Clone, AsChangeset)]
 #[diesel(table_name = crate::schema::rubros)]
 pub struct NewRubro<'a> {
     pub name: Option<&'a str>,
@@ -74,7 +92,7 @@ impl<'a> NewRubro<'a> {
     }
 }
 
-#[derive(Queryable, Selectable,Identifiable, Debug, Clone, Associations, PartialEq)]
+#[derive(Queryable, Selectable, Identifiable, Debug, Clone, Associations, PartialEq)]
 #[diesel(belongs_to(Ingrediente))]
 #[diesel(table_name = crate::schema::sinonimo_ingredientes)]
 #[diesel(check_for_backend(diesel::pg::Pg))]
@@ -117,7 +135,7 @@ pub struct NewAditivo<'a> {
     pub observaciones: Option<&'a str>,
 }
 
-#[derive(Queryable,Identifiable, Selectable, Debug, Clone, Associations, PartialEq)]
+#[derive(Queryable, Identifiable, Selectable, Debug, Clone, Associations, PartialEq)]
 #[diesel(belongs_to(Rubro))]
 #[diesel(table_name = crate::schema::productos)]
 #[diesel(check_for_backend(diesel::pg::Pg))]
@@ -146,7 +164,7 @@ pub struct NewProducto<'a> {
     pub score: Option<f32>,
 }
 
-#[derive(Queryable,Identifiable, Selectable, Debug, Clone, Associations, PartialEq)]
+#[derive(Queryable, Identifiable, Selectable, Debug, Clone, Associations, PartialEq)]
 #[diesel(belongs_to(Producto))]
 #[diesel(belongs_to(Ingrediente))]
 #[diesel(belongs_to(Aditivo))]
@@ -154,17 +172,16 @@ pub struct NewProducto<'a> {
 #[diesel(table_name = crate::schema::ingredientes_productos)]
 #[diesel(check_for_backend(diesel::pg::Pg))]
 pub struct IngredienteProducto {
-    pub id : i32,
-    pub producto_id : i32,
-    pub ingrediente_id : Option<i32>,
-    pub aditivo_id : Option<i32>,
+    pub id: i32,
+    pub producto_id: i32,
+    pub ingrediente_id: Option<i32>,
+    pub aditivo_id: Option<i32>,
 }
 #[derive(Debug, Insertable, Default)]
 #[diesel(table_name = crate::schema::ingredientes_productos)]
 
 pub struct NewIngredienteProducto {
-    pub producto_id : i32,
-    pub ingrediente_id : Option<i32>,
-    pub aditivo_id : Option<i32>,
+    pub producto_id: i32,
+    pub ingrediente_id: Option<i32>,
+    pub aditivo_id: Option<i32>,
 }
-

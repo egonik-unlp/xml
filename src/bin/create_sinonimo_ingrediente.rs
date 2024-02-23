@@ -1,8 +1,5 @@
 use diesel::prelude::*;
-use xml::{
-    establish_connection,
-    models::*
-};
+use xml::{establish_connection, models::*};
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     use xml::schema::ingredientes::dsl::*;

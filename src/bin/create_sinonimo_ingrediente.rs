@@ -1,13 +1,7 @@
-use diesel::{insert_into, prelude::*, result};
-use dotenvy::Iter;
+use diesel::prelude::*;
 use xml::{
     establish_connection,
-    models::{self, *},
-    schema::{
-        self,
-        ingredientes::{self, id},
-        sinonimo_ingredientes,
-    },
+    models::*
 };
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
@@ -24,7 +18,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     ni.existe = Some(true);
 
     println!("{:?}", ni);
-    let new_si = insert_into(sinonimo_ingredientes)
+    let new_si = diesel::insert_into(sinonimo_ingredientes)
         .values(&ni)
         .returning(SinonimoIngrediente::as_returning())
         .get_result(conn)?;

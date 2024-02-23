@@ -1,6 +1,6 @@
 use diesel::prelude::*;
 
-#[derive(Queryable, Selectable, Debug, Clone)]
+#[derive(Queryable, Selectable, Debug, Clone, PartialEq)]
 #[diesel(table_name = crate::schema::ingredientes)]
 #[diesel(check_for_backend(diesel::pg::Pg))]
 pub struct Ingrediente {
@@ -34,7 +34,7 @@ pub struct NewIngrediente<'a> {
     pub total_risk: Option<f32>,
 }
 
-#[derive(diesel_derive_enum::DbEnum, Debug, Clone)]
+#[derive(diesel_derive_enum::DbEnum, Debug, Clone, PartialEq)]
 #[ExistingTypePath = "crate::schema::sql_types::Cat"]
 pub enum Cat {
     #[db_rename = "BPC"]
@@ -48,7 +48,8 @@ impl Default for Cat {
     }
 }
 
-#[derive(Queryable, Selectable, Debug, Clone)]
+
+#[derive(Queryable, Selectable, Debug, Clone, PartialEq)]
 #[diesel(table_name = crate::schema::rubros)]
 #[diesel(check_for_backend(diesel::pg::Pg))]
 pub struct Rubro {
@@ -73,7 +74,7 @@ impl<'a> NewRubro<'a> {
     }
 }
 
-#[derive(Queryable, Selectable,Identifiable, Debug, Clone, Associations)]
+#[derive(Queryable, Selectable,Identifiable, Debug, Clone, Associations, PartialEq)]
 #[diesel(belongs_to(Ingrediente))]
 #[diesel(table_name = crate::schema::sinonimo_ingredientes)]
 #[diesel(check_for_backend(diesel::pg::Pg))]
@@ -92,7 +93,7 @@ pub struct NewSinonimoIngrediente<'a> {
     pub existe: Option<bool>,
 }
 
-#[derive(Queryable, Selectable, Debug, Clone)]
+#[derive(Queryable, Selectable, Debug, Clone, PartialEq)]
 #[diesel(table_name = crate::schema::aditivos)]
 #[diesel(check_for_backend(diesel::pg::Pg))]
 pub struct Aditivo {
@@ -116,7 +117,7 @@ pub struct NewAditivo<'a> {
     pub observaciones: Option<&'a str>,
 }
 
-#[derive(Queryable,Identifiable, Selectable, Debug, Clone, Associations)]
+#[derive(Queryable,Identifiable, Selectable, Debug, Clone, Associations, PartialEq)]
 #[diesel(belongs_to(Rubro))]
 #[diesel(table_name = crate::schema::productos)]
 #[diesel(check_for_backend(diesel::pg::Pg))]
@@ -145,7 +146,7 @@ pub struct NewProducto<'a> {
     pub score: Option<f32>,
 }
 
-#[derive(Queryable,Identifiable, Selectable, Debug, Clone, Associations)]
+#[derive(Queryable,Identifiable, Selectable, Debug, Clone, Associations, PartialEq)]
 #[diesel(belongs_to(Producto))]
 #[diesel(belongs_to(Ingrediente))]
 #[diesel(belongs_to(Aditivo))]
@@ -166,3 +167,4 @@ pub struct NewIngredienteProducto {
     pub ingrediente_id : Option<i32>,
     pub aditivo_id : Option<i32>,
 }
+

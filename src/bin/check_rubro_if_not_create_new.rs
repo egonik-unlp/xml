@@ -1,6 +1,6 @@
 use self::models::*;
-use diesel::{prelude::*, result};
-use xml::{schema::rubros::name, *};
+use diesel::prelude::*;
+use xml::*;
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     use self::schema::rubros::dsl::*;

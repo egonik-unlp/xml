@@ -31,11 +31,9 @@ pub fn create_producto(
         .expect("Error insertando nuevo producto")
 }
 
-pub fn get_producto_by_name(conn: &mut PgConnection, query_descripcion: &str) -> Option<Producto> {
-    use crate::schema::productos;
-    use productos::dsl::*;
-    productos
-        .filter(descripcion.eq(query_descripcion))
+pub fn get_producto_by_name(conn: &mut PgConnection, descripcion: &str) -> Option<Producto> {
+    productos::table
+        .filter(productos::descripcion.eq(descripcion))
         .first(conn)
         .ok()
 }

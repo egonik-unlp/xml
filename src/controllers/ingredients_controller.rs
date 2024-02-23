@@ -1,10 +1,11 @@
-use crate::models::{Ingrediente, NewIngrediente};
+use crate::models::{Ingrediente, NewIngrediente, Cat};
 use crate::PgConnection;
 use diesel::prelude::*;
 
 pub fn create_ingrdiente(
     conn: &mut PgConnection,
     actual_name: &str,
+    categoria : Cat,
     info_para_reporte: &str,
     cita: &str,
     cancer_risk: f32,
@@ -19,6 +20,7 @@ pub fn create_ingrdiente(
 
     let mut new_entry = NewIngrediente::default();
     new_entry.actual_name = Some(actual_name);
+    new_entry.categoria = categoria;
     new_entry.info_para_reporte = Some(info_para_reporte);
     new_entry.cita = Some(cita);
     new_entry.cancer_risk = Some(cancer_risk);

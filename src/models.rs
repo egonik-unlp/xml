@@ -1,7 +1,6 @@
-use crate::*;
-use crate::{schema::ingredientes, DbCmp};
 use diesel::prelude::*;
-#[derive(Queryable, Selectable, Debug, Clone, PartialEq)]
+
+#[derive(Queryable, Selectable, Debug, Clone, PartialEq, Identifiable)]
 #[diesel(table_name = crate::schema::ingredientes)]
 #[diesel(check_for_backend(diesel::pg::Pg))]
 pub struct Ingrediente {
@@ -18,24 +17,6 @@ pub struct Ingrediente {
     pub env_risk: Option<f32>,
     pub total_risk: Option<f32>,
 }
-
-// impl<'a> DbCmp<'a> for Ingrediente {
-//     type DbType = NewIngrediente<'a>;
-//     fn compare_to_db(self, rhs: Self::DbType) -> Option<Vec<Self::DbType>> {
-//         let conn = &mut establish_connection();
-//         use crate::schema::ingredientes;
-//         use ingredientes::dsl::*;
-//         let name_to_compare = self.actual_name;
-//         if let Some(name) = name_to_compare {
-//             ingredientes
-//                 .filter(actual_name.eq(rhs.actual_name))
-//                 .load::<Self::DbType>(conn)
-//                 .ok()
-//         } else {
-//             None
-//         }
-//     }
-// }
 
 #[derive(Insertable, Default)]
 #[diesel(table_name = crate::schema::ingredientes)]
@@ -93,7 +74,7 @@ impl<'a> NewRubro<'a> {
 }
 
 #[derive(Queryable, Selectable, Identifiable, Debug, Clone, Associations, PartialEq)]
-#[diesel(belongs_to(Ingrediente))]
+#[diesel(belongs_to(Ingrediente, foreign_key = ingrediente_id))]
 #[diesel(table_name = crate::schema::sinonimo_ingredientes)]
 #[diesel(check_for_backend(diesel::pg::Pg))]
 pub struct SinonimoIngrediente {
@@ -124,7 +105,7 @@ pub struct Aditivo {
     pub observaciones: Option<String>,
 }
 
-#[derive(Insertable, Default)]
+#[derive(Insertable, Default, AsChangeset)]
 #[diesel(table_name = crate::schema::aditivos)]
 pub struct NewAditivo<'a> {
     pub categoria: Option<Cat>,
@@ -151,7 +132,7 @@ pub struct Producto {
     pub score: Option<f32>,
 }
 
-#[derive(Insertable, Default)]
+#[derive(Insertable, Default, AsChangeset)]
 #[diesel(table_name = crate::schema::productos)]
 pub struct NewProducto<'a> {
     pub codigo: Option<&'a str>,
@@ -177,7 +158,7 @@ pub struct IngredienteProducto {
     pub ingrediente_id: Option<i32>,
     pub aditivo_id: Option<i32>,
 }
-#[derive(Debug, Insertable, Default)]
+#[derive(Debug, Insertable, Default, AsChangeset)]
 #[diesel(table_name = crate::schema::ingredientes_productos)]
 
 pub struct NewIngredienteProducto {

@@ -19,5 +19,8 @@ pub fn create_rubro(conn: &mut PgConnection, name: &str, score: f32) -> Rubro {
 }
 
 pub fn get_rubro_by_name(conn: &mut PgConnection, query_name: &str) -> Option<Rubro> {
-    todo!();
+    rubros::table
+        .filter(rubros::name.eq(query_name))
+        .first(conn)
+        .ok()
 }

@@ -15,18 +15,18 @@ fn main() {
     let res = diesel::insert_into(rubros::table)
         .values(&nr)
         .returning(Rubro::as_returning())
-	.get_result(conn)
+        .get_result(conn)
         .unwrap();
     println!("{:?}", res);
     let mut nr2 = nr.clone();
     nr2.score = Some(3.0);
     let res2 = diesel::insert_into(rubros::table)
         .values(vec![&nr2])
-	.on_conflict(name)
+        .on_conflict(name)
         .do_update()
-	.set(&nr2)
-	.returning(Rubro::as_returning())
-	.get_result(conn)
+        .set(&nr2)
+        .returning(Rubro::as_returning())
+        .get_result(conn)
         .unwrap();
     println!("{:?}", res2);
 }

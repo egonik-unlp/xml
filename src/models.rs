@@ -18,7 +18,7 @@ pub struct Ingrediente {
     pub total_risk: Option<f32>,
 }
 
-#[derive(Insertable, Default)]
+#[derive(Insertable, Default, AsChangeset)]
 #[diesel(table_name = crate::schema::ingredientes)]
 pub struct NewIngrediente<'a> {
     pub categoria: Cat,

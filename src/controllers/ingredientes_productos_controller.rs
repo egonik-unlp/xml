@@ -1,8 +1,26 @@
 use crate::models::{
-    Ingrediente, IngredienteProducto, NewIngredienteProducto, SinonimoIngrediente,
+    Aditivo, Ingrediente, IngredienteProducto, NewIngredienteProducto, Producto, SinonimoIngrediente
 };
+use crate::schema::{aditivos, ingredientes};
 use crate::PgConnection;
 use diesel::prelude::*;
+
+
+impl IngredienteProducto {
+    pub fn convert_to_ingrediente(&self, conn: &mut PgConnection) -> Option<Ingrediente> {
+        ingredientes::table
+            .filter(ingredientes::id.eq(self.id))
+            .first(conn)
+            .ok()
+    }
+    pub fn convert_to_aditivo(&self, conn: &mut PgConnection) -> Option<Aditivo> {
+        aditivos::table
+            .filter(aditivos::id.eq(self.id))
+            .first(conn)
+            .ok()
+    }
+}
+
 
 pub fn create_ingrediente_producto(
     conn: &mut PgConnection,
@@ -22,6 +40,9 @@ pub fn create_ingrediente_producto(
         .expect("Error Agregando IngredienteProducto")
 }
 
-pub fn get_ingredientes_for_producto() -> Option<Vec<Ingrediente>> {
-    todo!()
+pub fn get_ingredientes_producto_for_producto(conn: &mut PgConnection, producto : Producto) -> Option<Vec<IngredienteProducto>> {
+    IngredienteProducto::belonging_to(&producto)
+    .select(IngredienteProducto::as_select())
+    .load(conn)
+    .ok()
 }
